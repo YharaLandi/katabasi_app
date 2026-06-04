@@ -4,25 +4,54 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const splash = document.getElementById('splash-screen');
-  const caseScreen = document.getElementById('case-intro-screen');
-  const wrapper = document.getElementById('game-wrapper');
-  const splashBtn = document.getElementById('splash-btn');
+  const splash          = document.getElementById('splash-screen');
+  const caseScreen      = document.getElementById('case-intro-screen');
+  const wrapper         = document.getElementById('game-wrapper');
+  const splashBtn       = document.getElementById('splash-btn');
   const caseContinueBtn = document.getElementById('case-continue-btn');
-
-  const bgMusic = document.getElementById('bg-music');
-  const audioToggle = document.getElementById('audio-toggle');
-
-  const inventoryPanel = document.getElementById('inventory-panel');
+  const bgMusic         = document.getElementById('bg-music');
+  const audioToggle     = document.getElementById('audio-toggle');
+  const inventoryPanel  = document.getElementById('inventory-panel');
   const inventoryToggle = document.getElementById('inventory-toggle');
 
   if (bgMusic) bgMusic.volume = 0.3;
 
+  // ── NEBBIA VANTA ────────────────────────────
+  const isMobile = window.innerWidth <= 768;
+
+  const vantaOptions = {
+    el: '#splash-screen',
+    mouseControls: !isMobile,
+    touchControls: isMobile,
+    gyroControls: false,
+    minHeight: 200.00,
+    minWidth: 200.00,
+    highlightColor: 0xffffff,
+    midtoneColor:   0xaaaaaa,
+    lowlightColor:  0x333333,
+    baseColor:      0x000000,
+    blurFactor:     0.7,
+    speed:          2.00,
+    zoom:           1.00
+  };
+
+  if (isMobile) {
+    vantaOptions.speed = 1.50;
+    vantaOptions.zoom  = 1.10;
+  }
+
+  if (typeof VANTA !== 'undefined' && typeof THREE !== 'undefined') {
+    VANTA.FOG(vantaOptions);
+  } else {
+    console.warn('Vanta o Three.js non caricati');
+  }
+
+  // ── SPLASH → GIORNALE ───────────────────────
   splashBtn.addEventListener('click', () => {
     splash.classList.add('splash-exit');
 
     if (bgMusic) {
-      bgMusic.play().catch(err => console.log("Riproduzione audio bloccata dal browser: ", err));
+      bgMusic.play().catch(err => console.log("Audio bloccato: ", err));
     }
 
     setTimeout(() => {
@@ -33,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 1000);
   });
 
+  // ── AUDIO TOGGLE ────────────────────────────
   if (audioToggle && bgMusic) {
     audioToggle.addEventListener('click', () => {
       if (bgMusic.muted) {
@@ -49,8 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // ── GIORNALE → GIOCO ────────────────────────
   caseContinueBtn.addEventListener('click', () => {
-    caseScreen.style.opacity = '0';
+    caseScreen.style.opacity    = '0';
     caseScreen.style.transition = 'opacity 0.8s ease';
 
     setTimeout(() => {
@@ -62,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 800);
   });
 
+  // ── INVENTARIO ──────────────────────────────
   if (inventoryToggle && inventoryPanel) {
     inventoryToggle.addEventListener('click', (event) => {
       event.stopPropagation();
@@ -70,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', (event) => {
       if (!inventoryPanel.classList.contains('hidden') &&
-        !inventoryPanel.contains(event.target) &&
-        event.target !== inventoryToggle) {
+          !inventoryPanel.contains(event.target) &&
+          event.target !== inventoryToggle) {
         inventoryPanel.classList.add('hidden');
       }
     });
@@ -83,37 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-/* === NEBBIA VANTA.JS === */
-
-let vantaOptions = {
-  el: '#splash-screen',
-  mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  highlightColor: 0xffffff,
-  midtoneColor: 0xaaaaaa,
-  lowlightColor: 0x333333,
-  baseColor: 0x000000,
-  speed: 2.00,
-  zoom: 1.00,
-  blurFactor: 0.7
-};
-
-if (window.innerWidth <= 768) {
-  vantaOptions.speed = 1.50;
-  vantaOptions.zoom = 1.10;
-  vantaOptions.blurFactor = 0.7;
-  vantaOptions.highlightColor = 0xffffff;  // nebbia bianca
-  vantaOptions.midtoneColor = 0xaaaaaa;    // grigio chiaro
-  vantaOptions.lowlightColor = 0x333333;   // grigio scuro
-  vantaOptions.baseColor = 0x000000;       // fondo nero puro
-}
-
-VANTA.FOG(vantaOptions);
-
-/* === UTILITY === */
+// ── UTILITY ─────────────────────────────────
 
 let messageTimeout = null;
 

@@ -62,7 +62,7 @@ const ITEMS = {
     id: 'item_dossier_open',
     name: 'Dossier aperto',
     image: 'assets/images/items/item_dossier.png',
-    description: 'Nome: REDACTED. Data: 14 novembre — la stessa notte della morte di Mira. Il paziente di Dorian era lì.',
+description: 'Nome: REDACTED. Data: 14 novembre — la stessa notte della morte di Mira. Il paziente di Dorian era lì. Sullo scaffale: #3 — 2 marzo, #1 — 15 giugno, #4 — 8 settembre, #2 — 14 novembre.',
     combinable: false,
     combinations: []
   },

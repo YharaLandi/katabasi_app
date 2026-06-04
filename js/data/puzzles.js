@@ -69,7 +69,7 @@ const PUZZLES = {
       description: 'Sable ti fissa. Poi parla.',
       prompt: '"Sono sempre presente quando qualcosa finisce, ma non esisto quando inizia. Cosa sono?"',
       hint: 'Pensa a cosa lascia ogni ricordo cancellato.',
-      solution: 'silenzio',
+      solution: ['silenzio', 'il silenzio'],
       rewardClue: 'clue_sable_access',
       rewardText: 'Sable inclina la testa. Sa che sei pronto.'
     }

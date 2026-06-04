@@ -127,7 +127,7 @@ function renderSequencePuzzle(puzzle, container) {
   const buttons = document.createElement('div');
   buttons.classList.add('sequence-buttons');
 
-  ['1', '2', '3', '4'].forEach(num => {
+  ['0','1', '2', '3', '4','5', '6', '7', '8','9'].forEach(num => {
     const btn = document.createElement('button');
     btn.classList.add('sequence-btn');
     btn.textContent = num;

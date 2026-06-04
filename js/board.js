@@ -9,6 +9,9 @@
 const CLUE_LABELS = {
   clue_cipher_note:     'Messaggio cifrato — GUARDA SOTTO',
   clue_vial_label:      'Etichetta invisibile — 0-07-PALE',
+  clue_elias_nervous:   'Elias — agitazione insolita per un veterano della Torre',
+  clue_elias_alibi:     'Elias — alibi isolato e non verificabile la notte del 14 novembre',
+  clue_elias_key:       'Elias — reazione difensiva alla vista della chiave speciale',
   clue_calista_nervous: 'Calista — nervosismo alla menzione di Mira',
   clue_calista_motive:  'Calista — vendeva ricordi rubati dalla Torre',
   clue_waiting_room:    'Clinica — paziente anonimo presente quella notte',
@@ -18,6 +21,7 @@ const CLUE_LABELS = {
   clue_dorian_secret:   'Dorian — i ricordi cancellati si spostano',
   clue_sable_access:    'Sable — pronto a parlare',
   clue_sable_truth:     'Sable — Mira non è scesa da sola'
+  
 };
 
 // Categoria visiva — determina il colore del nodo
@@ -28,6 +32,9 @@ const CLUE_LABELS = {
 const CLUE_CATEGORIES = {
   clue_cipher_note:     'gold',
   clue_vial_label:      'gold',
+  clue_elias_nervous:   'gold',
+  clue_elias_alibi:     'gold',
+  clue_elias_key:       'gold',
   clue_calista_nervous: 'red',
   clue_calista_motive:  'red',
   clue_waiting_room:    'purple',
@@ -43,6 +50,8 @@ const VALID_CONNECTIONS = [
   ['clue_cipher_note',  'clue_vial_label'],
   ['clue_vial_label',   'clue_dossier_open'],
   ['clue_dossier_open', 'clue_dorian_motive'],
+  ['clue_elias_key', 'clue_vial_label'],
+  ['clue_elias_alibi', 'clue_waiting_room'],
   ['clue_calista_motive', 'clue_calista_nervous'],
   ['clue_waiting_room', 'clue_dorian_patient'],
   ['clue_sable_truth',  'clue_dorian_motive']

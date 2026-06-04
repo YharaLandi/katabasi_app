@@ -76,7 +76,7 @@ function loadEnding() {
 }
 
 function restartGame() {
-  // Resetta lo stato
+  // Resetta lo stato globale
   gameState.player.identity = null;
   gameState.player.name = '';
   gameState.clues = [];
@@ -88,8 +88,15 @@ function restartGame() {
   gameState.unlockedScenes = ['prologue'];
   gameState.puzzlesSolved = [];
 
-  // Ripristina UI
+  // Ripristina l'UI dei pannelli
   document.getElementById('inventory-panel').classList.remove('hidden');
+  
+  // RENDER E PULIZIA INVENTARIO
   renderInventory();
+  if (typeof hideItemDetail === 'function') {
+    hideItemDetail(); // <--- Rimuove il testo della fiala rimasto orfano a schermo!
+  }
+
+  // Ricarica il prologo
   loadScene('prologue');
 }

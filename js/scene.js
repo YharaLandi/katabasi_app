@@ -127,44 +127,49 @@ function renderExploration(scene) {
   const actions = document.createElement('div');
   actions.classList.add('scene-actions');
 
-  // Oggetti raccoglibili
+// === OGGETTI RACCOGLIBILI ===
   if (scene.items && scene.items.length > 0) {
     scene.items.forEach(itemId => {
       const item = ITEMS[itemId];
       if (!item) return;
 
-      // Nascondi se già in inventario
+      // Nascondi se già in inventario o se esiste una versione evoluta
       if (hasItem(itemId)) return;
-
-      // Nascondi se esiste una versione evolved già in inventario
       if (item.replacedBy && hasItem(item.replacedBy)) return;
 
       const btn = document.createElement('button');
+      // Ripristinate le classi CSS native esatte
       btn.classList.add('action-btn', 'action-pick');
       btn.textContent = `Raccogli: ${item.name}`;
       btn.addEventListener('click', () => pickUpItem(itemId));
-      actions.appendChild(btn);
+      actions.appendChild(btn); // Usa 'actions' come da codice originale
     });
   }
 
-  // Puzzle disponibili
+  // === PUZZLE DISPONIBILI ===
   if (scene.puzzles && scene.puzzles.length > 0) {
     scene.puzzles.forEach(puzzleId => {
-      if (isPuzzleSolved(puzzleId)) return;
-
       const puzzle = PUZZLES[puzzleId];
-
-      // Mostra il puzzle solo se hai l'oggetto richiesto
-      if (puzzle.requiredItem && !hasItem(puzzle.requiredItem)) return;
+      if (!puzzle || isPuzzleSolved(puzzleId)) return;
 
       const btn = document.createElement('button');
+      // Ripristinate le classi CSS native esatte
       btn.classList.add('action-btn', 'action-puzzle');
       btn.textContent = `Esamina: ${puzzle.title}`;
-      btn.addEventListener('click', () => openPuzzle(puzzleId));
-      actions.appendChild(btn);
+
+      btn.addEventListener('click', () => {
+        // Controllo preventivo dell'oggetto richiesto per evitare blocchi logici
+        if (puzzle.requiredItem && !hasItem(puzzle.requiredItem)) {
+          const missingItemName = ITEMS[puzzle.requiredItem]?.name || "un oggetto specifico";
+          showMessage(`Ti serve il ${missingItemName} per interagire con questo elemento.`);
+        } else {
+          openPuzzle(puzzleId);
+        }
+      });
+
+      actions.appendChild(btn); // Usa 'actions' come da codice originale
     });
   }
-
   // Personaggi con cui parlare
   if (scene.characters && scene.characters.length > 0) {
     scene.characters.forEach(charId => {

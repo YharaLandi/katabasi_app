@@ -6,8 +6,93 @@
 // ============================================
 
 const CHARACTERS = {
+  elias: {
+    id: 'elias',
+    name: 'Elias Vorn',
+    role: 'Custode della Torre',
+    portraits: {
+      neutral: 'assets/images/characters/char_elias_neutral.png',
+      suspect: 'assets/images/characters/char_elias_suspect.png'
+    },
+    dialogues: {
+      intro: {
+        id: 'intro',
+        portrait: 'neutral',
+        text: 'Non dovrebbe essere qui. La Torre è chiusa al pubblico dopo... l\'incidente dell\'archivista.',
+        options: [
+          {
+            id: 'ask_mira',
+            label: 'Conoscevi Mira Voss?',
+            condition: null,
+            next: 'elias_mira',
+            consequence: null
+          },
+          {
+            id: 'ask_keys',
+            label: 'Hai tu il controllo di tutte le chiavi?',
+            condition: null,
+            next: 'elias_keys',
+            consequence: null
+          },
+          {
+            id: 'ask_detective',
+            label: 'Sto conducendo un\'indagine ufficiale sulla morte di Mira. Collabora.',
+            condition: { identity: 'detective' },
+            next: 'elias_pressured',
+            consequence: { addClue: 'clue_elias_nervous' }
+          }
+        ]
+      },
+      elias_mira: {
+        id: 'elias_mira',
+        portrait: 'neutral',
+        text: 'Era una professionista precisa. Troppo curiosa, forse. Cercava risposte nei vecchi registri della Torre.',
+        options: [
+          {
+            id: 'ask_night',
+            label: 'Dov\'eri la notte del 14 novembre?',
+            condition: null,
+            next: 'elias_alibi',
+            consequence: { addClue: 'clue_elias_alibi' }
+          }
+        ]
+      },
+      elias_alibi: {
+        id: 'elias_alibi',
+        portrait: 'suspect',
+        text: 'Ero nella mia garitta inferiore, a fare l\'inventario delle vecchie bobine magnetiche. Da solo. Come ogni fottuta notte.',
+        options: []
+      },
+      elias_keys: {
+        id: 'elias_keys',
+        portrait: 'neutral',
+        text: 'È il mio dovere da trent\'anni. Sorveglio ogni singola serratura di questa struttura.',
+        options: [
+          {
+            id: 'ask_key_special',
+            label: 'Anche la chiave pesante con l\'emblema dell\'occhio che ho trovato?',
+            condition: { hasItem: 'item_key' },
+            next: 'elias_key_reaction',
+            consequence: { addClue: 'clue_elias_key' }
+          }
+        ]
+      },
+      elias_key_reaction: {
+        id: 'elias_key_reaction',
+        portrait: 'suspect',
+        text: 'Dove hai preso quella chiave? Non dovrebbe... quella serratura non appartiene ai registri ordinari!',
+        options: []
+      },
+      elias_pressured: {
+        id: 'elias_pressured',
+        portrait: 'suspect',
+        text: 'La legge si ferma ai piedi della Torre, investigatore. Non ho nulla da dirvi.',
+        options: []
+      }
+    }
+  },
 
-  calista: {
+calista: {
     id: 'calista',
     name: 'Calista Renn',
     role: 'Commerciante di ricordi',
@@ -19,7 +104,7 @@ const CHARACTERS = {
       intro: {
         id: 'intro',
         portrait: 'neutral',
-        text: 'Stai guardando le mie fiale da cinque minuti. Compri o vai via.',
+        text: 'Stai guardando le mie fiale da compensazione da cinque minuti. Compri o vai via.',
         options: [
           {
             id: 'ask_mira',
@@ -36,8 +121,15 @@ const CHARACTERS = {
             consequence: null
           },
           {
+            id: 'ask_journalist',
+            label: 'Ho un articolo in prima pagina pronto. Il tuo nome attirerà i corvi della Torre.',
+            condition: { identity: 'journalist' },
+            next: 'calista_exposed', // La giornalista la costringe subito a confessare il movente
+            consequence: { addClue: 'clue_calista_motive' }
+          },
+          {
             id: 'ask_detective',
-            label: 'Ho un mandato. Rispondi alle mie domande.',
+            label: 'Ho un mandato ufficiale. Rispondi alle mie domande.',
             condition: { identity: 'detective' },
             next: 'calista_pressured',
             consequence: { addClue: 'clue_calista_nervous' }
@@ -47,7 +139,7 @@ const CHARACTERS = {
       calista_mira: {
         id: 'calista_mira',
         portrait: 'evasive',
-        text: 'Tutti conoscevano Mira. Era l\'archivista. Era... necessaria.',
+        text: 'Tutti conoscevano Mira. Era l\'archivista della Torre. Era... necessaria.',
         options: [
           {
             id: 'cover',
@@ -71,8 +163,8 @@ const CHARACTERS = {
         text: 'Fonti private. Non chiedo da chi vengono, non chiedo dove vanno.',
         options: [
           {
-            id: 'back',
-            label: 'Capito.',
+            id: 'back_to_intro',
+            label: 'Ho altre domande.',
             condition: null,
             next: 'intro',
             consequence: null
@@ -82,11 +174,11 @@ const CHARACTERS = {
       calista_pressured: {
         id: 'calista_pressured',
         portrait: 'evasive',
-        text: 'Un mandato. Interessante. Mostrami.',
+        text: 'Un mandato ufficiale... Certo che collaboro. Ma non so molto. Chiedimi di Mira, ti dirò quel poco che ricordo.',
         options: [
           {
-            id: 'bluff',
-            label: "È in arrivo. Nel frattempo parliamo.",
+            id: 'continue_to_mira',
+            label: 'Parliamo di Mira, allora.',
             condition: null,
             next: 'calista_mira',
             consequence: null
@@ -96,14 +188,14 @@ const CHARACTERS = {
       calista_covered: {
         id: 'calista_covered',
         portrait: 'neutral',
-        text: 'Saggio. Alcune cose è meglio non saperle.',
-        options: [] // fine dialogo
+        text: 'Saggio da parte tua. Alcune cose è meglio lasciarle seppellite nell\'oblio.',
+        options: [] // Fine dialogo terminale
       },
       calista_exposed: {
         id: 'calista_exposed',
         portrait: 'evasive',
-        text: 'Mira aveva trovato un ricordo che non avrebbe dovuto toccare. Uno dei miei fornitori. Voleva... restituirlo.',
-        options: [] // fine dialogo — indizio aggiunto
+        text: 'Va bene, d\'accordo! Mira aveva trovato un ricordo che non avrebbe dovuto toccare nelle bobine. Uno dei miei fornitori della clinica. Voleva... restituirlo al proprietario legittimo. Questo avrebbe rovinato i miei affari.',
+        options: [] // Fine dialogo terminale — indizio aggiunto con successo
       }
     }
   },
@@ -188,12 +280,13 @@ const CHARACTERS = {
     }
   },
 
-  sable: {
+sable: {
     id: 'sable',
     name: 'Sable',
     role: 'Il corvo',
     portraits: {
-      neutral: 'assets/images/characters/char_sable.png'
+      neutral: 'assets/images/characters/char_sable.png',
+      mira_flashback: 'assets/images/characters/char_mira_flashback.png' // <--- Carichiamo qui il flashback!
     },
     dialogues: {
       intro: {
@@ -223,102 +316,15 @@ const CHARACTERS = {
       sable_waiting: {
         id: 'sable_waiting',
         portrait: 'neutral',
-        text: 'Il corvo ti fissa. Non si muove. Sa che non hai ancora tutto.',
-        options: [] // fine dialogo
+        text: 'Il corvo ti fissa. Non si muove. Sa che non hai ancora connesso tutti i fili nella bacheca.',
+        options: []
       },
       sable_speaks: {
         id: 'sable_speaks',
-        portrait: 'neutral',
-        text: 'Mira non è scesa da sola. Qualcuno sapeva dove sarebbe andata.',
-        options: [] // fine dialogo — indizio finale sbloccato
+        portrait: 'mira_flashback', // <--- Il box del dialogo mostrerà improvvisamente il flashback di Mira!
+        text: 'L\'occhio di vetro riflette la luce della luna... Un ricordo residuo si sblocca nella tua mente: vedi Mira correre nel panico lungo le bobine della Torre. Non era sola. Qualcuno che conosceva bene le stanze stava camminando dietro di lei nell\'ombra.',
+        options: [] // fine dialogo — indizio finale sbloccato con impatto visivo
       }
     }
-  },
-
-elias: {
-  id: 'elias',
-  name: 'Elias Vorn',
-  role: 'Custode della Torre',
-  portraits: {
-    neutral: 'assets/images/characters/char_elias_neutral.png',
-    suspect: 'assets/images/characters/char_elias_suspect.png'
-  },
-  dialogues: {
-    intro: {
-      id: 'intro',
-      portrait: 'neutral',
-      text: 'Non dovrebbe essere qui. La Torre è chiusa al pubblico.',
-      options: [
-        {
-          id: 'ask_mira',
-          label: 'Conoscevi Mira Voss?',
-          condition: null,
-          next: 'elias_mira',
-          consequence: null
-        },
-        {
-          id: 'ask_keys',
-          label: 'Hai le chiavi di tutti i corridoi?',
-          condition: null,
-          next: 'elias_keys',
-          consequence: null
-        },
-        {
-          id: 'ask_detective',
-          label: 'Sto indagando sulla sua morte. Collabora.',
-          condition: { identity: 'detective' },
-          next: 'elias_pressured',
-          consequence: { addClue: 'clue_elias_nervous' }
-        }
-      ]
-    },
-    elias_mira: {
-      id: 'elias_mira',
-      portrait: 'neutral',
-      text: 'Era una professionista. Precisa.',
-      options: [
-        {
-          id: 'ask_night',
-          label: 'Dov\'eri la notte in cui è morta?',
-          condition: null,
-          next: 'elias_alibi',
-          consequence: { addClue: 'clue_elias_alibi' }
-        }
-      ]
-    },
-    elias_alibi: {
-      id: 'elias_alibi',
-      portrait: 'suspect',
-      text: 'A casa. Da solo. Come ogni notte.',
-      options: []
-    },
-    elias_keys: {
-      id: 'elias_keys',
-      portrait: 'neutral',
-      text: 'È il mio lavoro. Ogni porta, ogni corridoio. Trent\'anni.',
-      options: [
-        {
-          id: 'ask_key_special',
-          label: 'Anche quella che apre la sala delle bobine?',
-          condition: { hasItem: 'item_key' },
-          next: 'elias_key_reaction',
-          consequence: { addClue: 'clue_elias_key' }
-        }
-      ]
-    },
-    elias_key_reaction: {
-      id: 'elias_key_reaction',
-      portrait: 'suspect',
-      text: 'Dove hai trovato quella chiave.',
-      options: []
-    },
-    elias_pressured: {
-      id: 'elias_pressured',
-      portrait: 'suspect',
-      text: 'Non ho niente da nascondere. Ma non ho niente da dirle neanche.',
-      options: []
-    }
-  }       
-  }        
-
+  }
 };  

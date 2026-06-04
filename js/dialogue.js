@@ -93,17 +93,19 @@ function renderDialogueNode(char, nodeId) {
 }
 
 function isOptionVisible(option) {
+  // Se non c'è nessuna condizione, l'opzione è sempre visibile e cliccabile
   if (!option.condition) return true;
 
+  // Estrazione sicura delle proprietà dall'oggetto condition
   const { identity, hasClue: clueId, hasItem: itemId } = option.condition;
 
+  // Controlli di corrispondenza con lo stato di gioco
   if (identity && getIdentity() !== identity) return false;
   if (clueId && !hasClue(clueId)) return false;
   if (itemId && !hasItem(itemId)) return false;
 
   return true;
 }
-
 function applyConsequence(consequence) {
   if (!consequence) return;
 

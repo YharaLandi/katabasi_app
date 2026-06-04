@@ -106,7 +106,10 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* === EFFETTO NEBBIA VANTA.JS INTERFACCIA === */
-VANTA.FOG({
+/* === CONFIGURAZIONE DINAMICA NEBBIA VANTA.JS === */
+
+// 1. Definiamo la configurazione di base (Desktop)
+let vantaOptions = {
   el: '#splash-screen',
   mouseControls: true,
   touchControls: true,
@@ -117,9 +120,22 @@ VANTA.FOG({
   midtoneColor: 0xa0a0a0,
   lowlightColor: 0x5f5f5f,
   baseColor: 0xa4a4a4,
-  speed: 2.00,
-  zoom: 1.60
-});
+  speed: 2.00, // Velocità su PC
+  zoom: 1.60   // Zoom su PC
+};
+
+// 2. CONTROLLO MOBILE: Se lo schermo è inferiore o uguale a 768px, modifichiamo i parametri
+if (window.innerWidth <= 768) {
+  vantaOptions.speed = 3.00;        // Riduciamo la velocità su mobile per risparmiare CPU/Batteria
+  vantaOptions.zoom = 1.10;         // Modifichiamo lo zoom per stringere l'inquadratura sul telefono
+  
+  // Puoi anche cambiare i colori solo su mobile modificando queste righe:
+  // vantaOptions.midtoneColor = 0x808080; 
+  // vantaOptions.baseColor = 0x909090;
+}
+
+// 3. Inizializziamo Vanta con la configurazione scelta
+VANTA.FOG(vantaOptions);
 
 // ── UTILITY GLOBALI ─────────────────────────────────
 

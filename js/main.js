@@ -16,10 +16,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const bgMusic = document.getElementById('bg-music');
   const audioToggle = document.getElementById('audio-toggle');
 
+  // Elementi Inventario
+  const inventoryPanel = document.getElementById('inventory-panel');
+  const inventoryToggle = document.getElementById('inventory-toggle');
+
   // Impostiamo un volume di sottofondo soffuso di default
   if (bgMusic) bgMusic.volume = 0.3;
 
-  // STEP 1: Da Splash Screen a Ritaglio Giornale + Avvio Audio
+  // STEP 1: Da Splash Screen a Ritaglio Giornale + Avvio Audio (Garantendo l'isolamento)
   splashBtn.addEventListener('click', () => {
     splash.classList.add('splash-exit');
     
@@ -30,12 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     setTimeout(() => {
       splash.classList.add('hidden');
+      
+      // SICUREZZA: Teniamo spento il wrapper di gioco principale mentre c'è il giornale
+      wrapper.classList.add('hidden');
+      
       caseScreen.classList.remove('hidden');
       caseScreen.classList.add('game-enter');
     }, 1000);
   });
 
-  // STEP 2: Gestione del pulsante di Mute dell'audio
+  // Gestione del pulsante di Mute dell'audio
   if (audioToggle && bgMusic) {
     audioToggle.addEventListener('click', () => {
       if (bgMusic.muted) {
@@ -52,26 +60,68 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Da Ritaglio Giornale a Scelta Identità (Prologo)
+  // STEP 2: Da Ritaglio Giornale a Scelta Identità (Prologo)
   caseContinueBtn.addEventListener('click', () => {
     caseScreen.style.opacity = '0';
     caseScreen.style.transition = 'opacity 0.8s ease';
+    
     setTimeout(() => {
+      // Spegniamo il giornale definitivamente per liberare la memoria del layout
       caseScreen.classList.add('hidden');
+      
+      // Accendiamo e sblocchiamo il gioco solo adesso
       wrapper.classList.remove('hidden');
       wrapper.classList.add('game-enter');
+      
       renderInventory();
       loadScene('prologue');
     }, 800);
   });
 
-  // ── INVENTORY TOGGLE ────────────────────────
-  document.getElementById('inventory-toggle').addEventListener('click', () => {
-    document.getElementById('inventory-panel').classList.toggle('hidden');
-  });
+  // ── GESTIONE INVENTARIO (CON FUNZIONE CLICK OUTSIDE) ────────────────────────
+  
+  if (inventoryToggle && inventoryPanel) {
+    // 1. Apertura/Chiusura classica tramite il pulsante Header
+    inventoryToggle.addEventListener('click', (event) => {
+      event.stopPropagation(); // Blocca la propagazione immediata al document
+      inventoryPanel.classList.toggle('hidden');
+    });
+
+    // 2. Chiudi l'inventario se si clicca in un punto qualsiasi fuori dal pannello
+    document.addEventListener('click', (event) => {
+      if (!inventoryPanel.classList.contains('hidden') && 
+          !inventoryPanel.contains(event.target) && 
+          event.target !== inventoryToggle) {
+        
+        inventoryPanel.classList.add('hidden');
+      }
+    });
+
+    // 3. Evita che i click all'interno dell'inventario stesso lo chiudano per errore
+    inventoryPanel.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+  }
 
 });
-// ── UTILITY ─────────────────────────────────
+
+/* === EFFETTO NEBBIA VANTA.JS INTERFACCIA === */
+VANTA.FOG({
+  el: '#splash-screen',
+  mouseControls: true,
+  touchControls: true,
+  gyroControls: false,
+  minHeight: 200.00,
+  minWidth: 200.00,
+  highlightColor: 0x0,
+  midtoneColor: 0xa0a0a0,
+  lowlightColor: 0x5f5f5f,
+  baseColor: 0xa4a4a4,
+  speed: 2.00,
+  zoom: 1.60
+});
+
+// ── UTILITY GLOBALI ─────────────────────────────────
 
 let messageTimeout = null;
 
@@ -85,19 +135,3 @@ function showMessage(text) {
     box.classList.add('hidden');
   }, 4000);
 }
-
-
-VANTA.FOG({
-  el: '#splash-screen',
- mouseControls: true,
-  touchControls: true,
-  gyroControls: false,
-  minHeight: 200.00,
-  minWidth: 200.00,
-  highlightColor: 0x0,
-  midtoneColor: 0xa0a0a0,
-  lowlightColor: 0x5f5f5f,
-  baseColor: 0xa4a4a4,
-  speed: 2.00,
-  zoom: 1.60
-})

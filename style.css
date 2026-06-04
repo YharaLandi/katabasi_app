@@ -76,7 +76,7 @@ html, body {
   font-family: var(--font-body);
   font-style: italic;
   font-size: 1.1rem;
-  color: var( --white);
+  color: var(--text2);
   letter-spacing: 0.2em;
   margin: 0;
 }
@@ -96,7 +96,7 @@ html, body {
   font-family: var(--font-body);
   font-style: italic;
   font-size: 1rem;
-  color: var(--white);
+  color: var(--text2);
   letter-spacing: 0.05em;
   margin: 0;
 }
@@ -106,7 +106,7 @@ html, body {
   font-size: 11px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--white);
+  color: var(--gold);
   background: transparent;
   border: 1px solid var(--border2);
   padding: 12px 32px;
@@ -119,15 +119,6 @@ html, body {
   background: rgba(200, 169, 110, 0.08);
   border-color: var(--gold);
   letter-spacing: 0.4em;
-}
-
-/* Nebbia — tre layer animati */
-
-#fog-canvas {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
 }
 
 /* Transizione entrata gioco */
@@ -336,21 +327,39 @@ html, body {
   text-transform: uppercase;
   background: rgba(10, 9, 8, 0.85);
   border: 1px solid var(--border);
-  color: var(--text2);
-  padding: 8px 16px;
+  color: var(--gold);
+  padding: 10px 18px;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
 }
 
 .action-btn:hover {
   color: var(--white);
   border-color: var(--border2);
+  background: rgba(200, 169, 110, 0.08);
 }
 
-.action-pick  { border-left: 2px solid var(--red2); }
+/* Bottoni figli diretti di scene-main — torna indietro, parla con Sable ecc */
+#scene-main > .action-btn {
+  width: auto;
+  align-self: flex-start;
+  font-size: 9px;
+  padding: 5px 12px;
+  opacity: 0.55;
+  color: var(--text2);
+  border-color: var(--border);
+}
+
+#scene-main > .action-btn:hover {
+  opacity: 1;
+  color: var(--gold);
+  border-color: var(--border2);
+}
+
+.action-pick   { border-left: 2px solid var(--red2); }
 .action-puzzle { border-left: 2px solid var(--gold); }
-.action-talk  { border-left: 2px solid #6b4c8a; }
-.action-board { border-left: 2px solid var(--gold2); width: 100%; text-align: left; }
+.action-talk   { border-left: 2px solid #6b4c8a; }
+.action-board  { border-left: 2px solid var(--gold2); width: 100%; text-align: left; }
 
 /* === EXITS === */
 
@@ -722,20 +731,17 @@ html, body {
 
 .board-node.connected { opacity: 0.7; }
 
-/* Categorie colore */
 .board-cat-gold   { border-left-color: var(--gold); }
 .board-cat-red    { border-left-color: var(--red2); }
 .board-cat-purple { border-left-color: #9b6cb0; }
 .board-cat-teal   { border-left-color: #5ecbb4; }
 
-/* Linee SVG per categoria */
 .board-line        { stroke-width: 1.5; opacity: 0.7; }
 .board-line-gold   { stroke: var(--gold); }
 .board-line-red    { stroke: var(--red2); }
 .board-line-purple { stroke: #9b6cb0; }
 .board-line-teal   { stroke: #5ecbb4; }
 
-/* Legenda */
 .board-legend {
   position: absolute;
   top: 1rem;

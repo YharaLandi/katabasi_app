@@ -73,8 +73,8 @@ const SCENES = {
     ],
     type: 'exploration',
     back: 'tower',
-    items: ['item_vial'],
-    characters: ['calista'],
+    items: ['item_vial', 'item_glass_eye'],
+     characters: ['calista'],
     puzzles: ['puzzle_combine_vial'],
     exits: [
       {

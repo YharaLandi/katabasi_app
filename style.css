@@ -83,7 +83,8 @@ html, body {
 
 .splash-title {
   font-family: var(--font-title);
-  font-size: clamp(5rem, 18vw, 10rem);
+  /* BILANCIATO: Abbassato il moltiplicatore vw in modo che scali bene anche sul tuo schermo */
+  font-size: clamp(3rem, 10vw, 7rem); 
   font-weight: 900;
   color: var(--white);
   letter-spacing: 0.2em;
@@ -1147,7 +1148,7 @@ html, body {
   animation: shake 0.4s ease;
 }
 
-/* === RESPONSIVE LAYOUTS & MEDIA QUERIES === */
+/* === RESPONSIVE LAYOUTS & MEDIA QUERIES (768px ORIGINALE) === */
 
 @media (max-width: 768px) {
   #game-wrapper {
@@ -1155,6 +1156,12 @@ html, body {
       "header"
       "main";
     grid-template-columns: 1fr;
+  }
+
+  /* === FIX ALLINEAMENTO SCENA MOBILE === */
+  #scene-main {
+    justify-content: flex-start; /* Evita di spingere i contenuti verso l'alto sotto l'header */
+    padding-top: 1rem;           /* Cuscinetto di sicurezza per staccarsi dall'header */
   }
 
   #inventory-panel {
@@ -1171,7 +1178,8 @@ html, body {
     transform: translateX(0);
   }
 
-  .identity-grid   { grid-template-columns: 1fr; }
+  /* LE SCHEDE DEL PROLOGO ADESSO VANNO IN COLONNA SINGOLA ED EVITANO DI SCHIACCIO */
+  .identity-grid   { grid-template-columns: 1fr; gap: 1rem; }
   .suspect-grid    { grid-template-columns: 1fr; }
   .dialogue-layout { grid-template-columns: 1fr; }
   

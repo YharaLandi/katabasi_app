@@ -42,6 +42,7 @@ const SCENES = {
 
   tower: {
     id: 'tower',
+    characters: ['elias'],
     title: 'La Torre delle Voci',
     background: 'assets/images/backgrounds/bg_tower.png',
     text: [

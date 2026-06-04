@@ -235,17 +235,90 @@ const CHARACTERS = {
     }
   },
 
-  elias: {
-    id: 'elias',
-    name: 'Elias Vorn',
-    role: 'Custode della Torre',
-    portraits: {
-      neutral: 'assets/images/characters/char_elias_neutral.png',
-      suspect: 'assets/images/characters/char_elias_suspect.png'
+elias: {
+  id: 'elias',
+  name: 'Elias Vorn',
+  role: 'Custode della Torre',
+  portraits: {
+    neutral: 'assets/images/characters/char_elias_neutral.png',
+    suspect: 'assets/images/characters/char_elias_suspect.png'
+  },
+  dialogues: {
+    intro: {
+      id: 'intro',
+      portrait: 'neutral',
+      text: 'Non dovrebbe essere qui. La Torre è chiusa al pubblico.',
+      options: [
+        {
+          id: 'ask_mira',
+          label: 'Conoscevi Mira Voss?',
+          condition: null,
+          next: 'elias_mira',
+          consequence: null
+        },
+        {
+          id: 'ask_keys',
+          label: 'Hai le chiavi di tutti i corridoi?',
+          condition: null,
+          next: 'elias_keys',
+          consequence: null
+        },
+        {
+          id: 'ask_detective',
+          label: 'Sto indagando sulla sua morte. Collabora.',
+          condition: { identity: 'detective' },
+          next: 'elias_pressured',
+          consequence: { addClue: 'clue_elias_nervous' }
+        }
+      ]
     },
-    dialogues: {
-      // Elias non è direttamente dialogabile — compare nella scena del confronto
+    elias_mira: {
+      id: 'elias_mira',
+      portrait: 'neutral',
+      text: 'Era una professionista. Precisa.',
+      options: [
+        {
+          id: 'ask_night',
+          label: 'Dov\'eri la notte in cui è morta?',
+          condition: null,
+          next: 'elias_alibi',
+          consequence: { addClue: 'clue_elias_alibi' }
+        }
+      ]
+    },
+    elias_alibi: {
+      id: 'elias_alibi',
+      portrait: 'suspect',
+      text: 'A casa. Da solo. Come ogni notte.',
+      options: []
+    },
+    elias_keys: {
+      id: 'elias_keys',
+      portrait: 'neutral',
+      text: 'È il mio lavoro. Ogni porta, ogni corridoio. Trent\'anni.',
+      options: [
+        {
+          id: 'ask_key_special',
+          label: 'Anche quella che apre la sala delle bobine?',
+          condition: { hasItem: 'item_key' },
+          next: 'elias_key_reaction',
+          consequence: { addClue: 'clue_elias_key' }
+        }
+      ]
+    },
+    elias_key_reaction: {
+      id: 'elias_key_reaction',
+      portrait: 'suspect',
+      text: 'Dove hai trovato quella chiave.',
+      options: []
+    },
+    elias_pressured: {
+      id: 'elias_pressured',
+      portrait: 'suspect',
+      text: 'Non ho niente da nascondere. Ma non ho niente da dirle neanche.',
+      options: []
     }
-  }
+  }       
+  }        
 
-};
+};  

@@ -266,6 +266,20 @@ function renderBoard(scene) {
   boardBtn.addEventListener('click', openBoard);
   main.appendChild(boardBtn);
 
+  // Puzzle disponibili
+  if (scene.puzzles && scene.puzzles.length > 0) {
+    scene.puzzles.forEach(puzzleId => {
+      if (isPuzzleSolved(puzzleId)) return;
+      const puzzle = PUZZLES[puzzleId];
+      if (puzzle.requiredItem && !hasItem(puzzle.requiredItem)) return;
+      const btn = document.createElement('button');
+      btn.classList.add('action-btn', 'action-puzzle');
+      btn.textContent = `Esamina: ${puzzle.title}`;
+      btn.addEventListener('click', () => openPuzzle(puzzleId));
+      main.appendChild(btn);
+    });
+  }
+
   // Sable — sbloccato se hai abbastanza indizi
   if (scene.characters) {
     scene.characters.forEach(charId => {

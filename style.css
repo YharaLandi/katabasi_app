@@ -804,27 +804,38 @@ body::-webkit-scrollbar {
 }
 
 .sequence-buttons {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 64px);
   gap: 8px;
-  margin-bottom: 0.75rem;
+  margin: 0 auto 0.75rem;
+  justify-content: center;
 }
 
 .sequence-btn {
   font-family: var(--font-mono);
-  font-size: 14px;
-  width: 44px;
-  height: 44px;
+  font-size: 18px;
+  width: 64px;
+  height: 64px;
   background: var(--bg3);
   border: 1px solid var(--border2);
   color: var(--white);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, border-color 0.2s;
 }
 
 .sequence-btn:hover {
   background: rgba(200, 169, 110, 0.1);
+  border-color: var(--gold);
 }
 
+.sequence-btn:active {
+  background: rgba(200, 169, 110, 0.2);
+}
+
+/* Lo 0 occupa la colonna centrale */
+.sequence-btn:last-child {
+  grid-column: 2;
+}
 /* === DIALOGUE OVERLAY === */
 
 .dialogue-layout {
@@ -1230,6 +1241,13 @@ body::-webkit-scrollbar {
 
   .identity-label {
     font-size: 0.95rem;
+  }
+
+  .puzzle-mirror-text {
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    padding: 1rem 0.5rem;
+    overflow: hidden;
   }
 
   .suspect-grid    { grid-template-columns: 1fr; }

@@ -179,7 +179,14 @@ function renderRiddlePuzzle(puzzle, container) {
   submitBtn.textContent = 'Rispondi';
   submitBtn.addEventListener('click', () => {
     const normalize = str => str.trim().toLowerCase().replace(/[\s\-_]/g, '');
-    if (normalize(input.value) === normalize(puzzle.solution)) {
+    const answer = normalize(input.value);
+
+    // Supporta sia stringa singola che array di soluzioni accettate
+    const solutions = Array.isArray(puzzle.solution)
+      ? puzzle.solution.map(normalize)
+      : [normalize(puzzle.solution)];
+
+    if (solutions.includes(answer)) {
       onPuzzleSolved(puzzle);
     } else {
       showPuzzleError(container);

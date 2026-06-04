@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const wrapper = document.getElementById('game-wrapper');
   const splashBtn = document.getElementById('splash-btn');
   const caseContinueBtn = document.getElementById('case-continue-btn');
-  
+
   const bgMusic = document.getElementById('bg-music');
   const audioToggle = document.getElementById('audio-toggle');
 
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   splashBtn.addEventListener('click', () => {
     splash.classList.add('splash-exit');
-    
+
     if (bgMusic) {
       bgMusic.play().catch(err => console.log("Riproduzione audio bloccata dal browser: ", err));
     }
@@ -52,7 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
   caseContinueBtn.addEventListener('click', () => {
     caseScreen.style.opacity = '0';
     caseScreen.style.transition = 'opacity 0.8s ease';
-    
+
     setTimeout(() => {
       caseScreen.classList.add('hidden');
       wrapper.classList.remove('hidden');
@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     document.addEventListener('click', (event) => {
-      if (!inventoryPanel.classList.contains('hidden') && 
-          !inventoryPanel.contains(event.target) && 
-          event.target !== inventoryToggle) {
+      if (!inventoryPanel.classList.contains('hidden') &&
+        !inventoryPanel.contains(event.target) &&
+        event.target !== inventoryToggle) {
         inventoryPanel.classList.add('hidden');
       }
     });
@@ -92,22 +92,23 @@ let vantaOptions = {
   gyroControls: false,
   minHeight: 200.00,
   minWidth: 200.00,
-  highlightColor: 0x0,
-  midtoneColor: 0xa0a0a0,
-  lowlightColor: 0x5f5f5f,
-  baseColor: 0xa4a4a4,
+  highlightColor: 0xffffff,
+  midtoneColor: 0xaaaaaa,
+  lowlightColor: 0x333333,
+  baseColor: 0x000000,
   speed: 2.00,
-  zoom: 1.60
+  zoom: 1.00,
+  blurFactor: 0.7
 };
 
 if (window.innerWidth <= 768) {
   vantaOptions.speed = 1.50;
-  vantaOptions.zoom = 2.20;
-  vantaOptions.blurFactor = 0.6;
-  vantaOptions.highlightColor = 0x111111;
-  vantaOptions.midtoneColor = 0x505050;
-  vantaOptions.lowlightColor = 0x202020;
-  vantaOptions.baseColor = 0x0a0908;
+  vantaOptions.zoom = 1.10;
+  vantaOptions.blurFactor = 0.7;
+  vantaOptions.highlightColor = 0xffffff;  // nebbia bianca
+  vantaOptions.midtoneColor = 0xaaaaaa;    // grigio chiaro
+  vantaOptions.lowlightColor = 0x333333;   // grigio scuro
+  vantaOptions.baseColor = 0x000000;       // fondo nero puro
 }
 
 VANTA.FOG(vantaOptions);

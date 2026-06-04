@@ -76,7 +76,7 @@ html, body {
   font-family: var(--font-body);
   font-style: italic;
   font-size: 1.1rem;
-  color: var(--text2);
+  color: var(--white);
   letter-spacing: 0.2em;
   margin: 0;
 }
@@ -96,7 +96,7 @@ html, body {
   font-family: var(--font-body);
   font-style: italic;
   font-size: 1rem;
-  color: var(--text2);
+  color: var(--white);
   letter-spacing: 0.05em;
   margin: 0;
 }
@@ -106,7 +106,7 @@ html, body {
   font-size: 11px;
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: var(--gold);
+  color: var(--white);
   background: transparent;
   border: 1px solid var(--border2);
   padding: 12px 32px;

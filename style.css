@@ -41,6 +41,15 @@ html, body {
   font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.7;
+
+  /* Nasconde la scrollbar su Firefox */
+  scrollbar-width: none; 
+}
+
+/* Nasconde la scrollbar su Chrome, Safari, Opera e i browser dei telefoni (iOS/Android) */
+html::-webkit-scrollbar, 
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* === SPLASH SCREEN === */
@@ -1156,14 +1165,25 @@ html, body {
       "header"
       "main";
     grid-template-columns: 1fr;
+    height: 100vh; /* Mantiene il vincolo dello schermo */
   }
 
-  /* === FIX ALLINEAMENTO SCENA MOBILE === */
+  /* === FIX COMPLETO ALLINEAMENTO E SCROLL MOBILE === */
+/* === FIX COMPLETO ALLINEAMENTO E SCROLL MOBILE === */
   #scene-main {
-    justify-content: flex-start; /* Evita di spingere i contenuti verso l'alto sotto l'header */
-    padding-top: 1rem;           /* Cuscinetto di sicurezza per staccarsi dall'header */
+    justify-content: flex-start;
+    padding-top: 1rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 80px);
+    
+    /* Nasconde la barra su Firefox */
+    scrollbar-width: none; 
   }
 
+  /* Nasconde la barra sui motori WebKit (Chrome mobile, Safari su iPhone, ecc.) */
+  #scene-main::-webkit-scrollbar {
+    display: none;
+  }
   #inventory-panel {
     position: fixed;
     right: 0;
@@ -1178,8 +1198,29 @@ html, body {
     transform: translateX(0);
   }
 
-  /* LE SCHEDE DEL PROLOGO ADESSO VANNO IN COLONNA SINGOLA ED EVITANO DI SCHIACCIO */
-  .identity-grid   { grid-template-columns: 1fr; gap: 1rem; }
+  /* === OTTIMIZZAZIONE SCHEDE IDENTITÀ MOBILE === */
+  .identity-grid { 
+    grid-template-columns: 1fr; 
+    gap: 1rem; 
+    padding-bottom: 2rem; /* Spazio di cortesia in fondo per non far toccare l'ultimo bottone al bordo */
+  }
+
+  .identity-card {
+    padding: 1rem; /* Ridotto da 1.5rem per recuperare tantissimo spazio verticale */
+    min-height: auto; /* Annulla eventuali altezze minime forzate */
+  }
+
+  .identity-desc {
+    font-size: 0.82rem; /* Rimpicciolisce leggermente la descrizione della classe */
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+  }
+
+  .identity-label {
+    font-size: 0.95rem; /* Titolo della classe (Detective, ecc.) proporzionato */
+  }
+
+  /* === FINESTRO SUSPETTATI E DIALOGHI === */
   .suspect-grid    { grid-template-columns: 1fr; }
   .dialogue-layout { grid-template-columns: 1fr; }
   
